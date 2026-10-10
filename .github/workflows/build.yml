@@ -42,6 +42,8 @@ jobs:
           INPUT_PM-VERSION-MAJOR: "5"
           INPUT_INSTALL-PATH: ./.php-bin
         run: node "$GITHUB_WORKSPACE/.test-dependencies/setup-php-action/dist/index.js"
+      - name: Test rules acceptance and form behavior
+        run: php tests/rules-flow.php
       - name: Run PHPStan at maximum level and build PHAR
         id: build
         uses: NhanAZ/DevTools@6606444fc32787a3e50275fdb668c2310e899740
