@@ -1,12 +1,12 @@
 ---
 name: AdvancedRules
-version: 1.1.2
+version: 1.1.3
 main: NhanAZ\AdvancedRules\Main
 api: 5.0.0
 
 author: NhanAZ
-website: https://github.com/NhanAZ
-description: "Get players who join your server for the first time to accept the server rules with AdvancedRules."
+website: https://github.com/NhanAZ-Plugins/AdvancedRules
+description: Require first-time players to accept the server rules before playing
 
 commands:
   advancedrules:

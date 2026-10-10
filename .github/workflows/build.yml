@@ -1,0 +1,69 @@
+name: Analyze rules and build plugin
+
+on:
+  push:
+    branches: [master]
+    tags: ["v*"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Analyze and package AdvancedRules
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out plugin and pinned pmforms source
+        uses: actions/checkout@v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Check out pinned Axolotl-PM source
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: axolotl-pm/PocketMine-MP
+          ref: dfe0d07e48a9e8d5a4a242fa43ff1cd3b743a955
+          path: .devtools-server
+          persist-credentials: false
+      - name: Check out Axolotl-PM PHP setup helper
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: axolotl-pm/setup-php-action
+          ref: b8c3f9add4f2ad4a5e2624a1112aba899ee8db0e
+          path: .test-dependencies/setup-php-action
+          persist-credentials: false
+      - name: Set up Axolotl-PM PHP environment
+        shell: bash
+        env:
+          INPUT_PHP-VERSION: "8.1"
+          INPUT_PM-VERSION-MAJOR: "5"
+          INPUT_INSTALL-PATH: ./.php-bin
+        run: node "$GITHUB_WORKSPACE/.test-dependencies/setup-php-action/dist/index.js"
+      - name: Run PHPStan at maximum level and build PHAR
+        id: build
+        uses: NhanAZ/DevTools@6606444fc32787a3e50275fdb668c2310e899740
+        with:
+          phpstan: max
+          phpstan-server: .devtools-server
+          virions: virions
+      - name: Verify PHAR checksum and bundled pmforms license
+        shell: bash
+        env:
+          PHAR_PATH: ${{ steps.build.outputs.phar }}
+          PHAR_SHA256: ${{ steps.build.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          printf '%s  %s\n' "$PHAR_SHA256" "$PHAR_PATH" | sha256sum --check --status
+          php -r '$phar = new Phar(getenv("PHAR_PATH")); if (!isset($phar["META-INF/virions/pmforms/LICENSE"])) { exit(1); }'
+      - name: Upload verified PHAR and build metadata
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: AdvancedRules-${{ github.sha }}
+          path: |
+            ${{ steps.build.outputs.phar }}
+            ${{ steps.build.outputs.metadata }}
+          if-no-files-found: error
+          retention-days: 14
