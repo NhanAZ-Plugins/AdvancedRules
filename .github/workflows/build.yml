@@ -58,12 +58,15 @@ jobs:
           set -euo pipefail
           printf '%s  %s\n' "$PHAR_SHA256" "$PHAR_PATH" | sha256sum --check --status
           php -r '$phar = new Phar(getenv("PHAR_PATH")); if (!isset($phar["META-INF/virions/pmforms/LICENSE"])) { exit(1); }'
+      - name: Stage validated build metadata
+        shell: bash
+        env:
+          BUILD_METADATA: ${{ steps.build.outputs.metadata }}
+        run: cp -- "$BUILD_METADATA" build/build-metadata.json
       - name: Upload verified PHAR and build metadata
         uses: actions/upload-artifact@v7.0.1
         with:
           name: AdvancedRules-${{ github.sha }}
-          path: |
-            ${{ steps.build.outputs.phar }}
-            ${{ steps.build.outputs.metadata }}
+          path: build/
           if-no-files-found: error
           retention-days: 14
