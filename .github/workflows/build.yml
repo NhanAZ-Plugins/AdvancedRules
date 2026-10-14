@@ -46,7 +46,7 @@ jobs:
         run: php tests/rules-flow.php
       - name: Run PHPStan at maximum level and build PHAR
         id: build
-        uses: NhanAZ/DevTools@6606444fc32787a3e50275fdb668c2310e899740
+        uses: NhanAZ/DevTools@8d13a75aaf4f330fdbd93737d58be9cacc41e262
         with:
           phpstan: max
           phpstan-server: .devtools-server
