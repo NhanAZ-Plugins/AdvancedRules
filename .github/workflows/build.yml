@@ -71,4 +71,3 @@ jobs:
           name: AdvancedRules-${{ github.sha }}
           path: build/
           if-no-files-found: error
-          retention-days: 14
