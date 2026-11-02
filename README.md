@@ -6,7 +6,7 @@ AdvancedRules asks first-time players to accept your server rules through a form
 
 - The plugin declares Axolotl-PM API 5.0.0 in `plugin.yml`.
 - The build includes [pmforms](https://github.com/dktapps-pm-pl/pmforms) as a private virion. Install the release PHAR as one file. The server does not need a separate pmforms plugin.
-- The source has passed PHPStan at maximum level against Axolotl-PM 5.49.1. The release workflow records the exact source revisions used for each build. Compatibility with every API 5 server patch has not been verified.
+- The source has passed PHPStan at maximum level against Axolotl-PM 5.51.1. The release workflow records the exact source revisions used for each build. Compatibility with every API 5 server patch has not been verified.
 
 ## Install and use
 
