@@ -30,7 +30,7 @@ The included [default configuration](resources/config.yml) documents the support
 
 ## Build and maintenance
 
-The [build workflow](.github/workflows/build.yml) uses [DevTools](https://github.com/NhanAZ/DevTools) to analyze the plugin, generate a standalone PHAR, and validate its checksum. The pmforms Git submodule pins the bundled library to a reviewed commit. Clone with submodules when building locally. Dependabot checks GitHub Actions and the submodule for updates. Proposed updates require CI and runtime review before they are merged.
+The [build workflow](.github/workflows/build.yml) uses [DevTools](https://github.com/AxolotlBucketLabs/DevTools) to analyze the plugin, generate a standalone PHAR, and validate its checksum. The pmforms Git submodule pins the bundled library to a reviewed commit. Clone with submodules when building locally. Dependabot checks GitHub Actions and the submodule for updates. Proposed updates require CI and runtime review before they are merged.
 
 ## License and support
 
